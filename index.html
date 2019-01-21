@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Game Of Life</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header><h1>Game Of Life</h1></header>
+
+      <section class="score-panel">
+        Generation <span class="iterations">0</span>
+        <div class="restart" onclick="startGame()">
+          <i class="fa fa-repeat"></i>
+        </div>
+      </section>
+
+      <div class="board">
+        <div class="row" id="row1">
+          <div class="col-10 cell" id="row1-col1"></div>
+          <div class="col-10 cell" id="row1-col2"></div>
+          <div class="col-10 cell" id="row1-col3"></div>
+          <div class="col-10 cell" id="row1-col4"></div>
+          <div class="col-10 cell" id="row1-col5"></div>
+          <div class="col-10 cell" id="row1-col6"></div>
+          <div class="col-10 cell" id="row1-col7"></div>
+          <div class="col-10 cell" id="row1-col8"></div>
+          <div class="col-10 cell" id="row1-col9"></div>
+          <div class="col-10 cell" id="row1-col10"></div>
+        </div>
+        <div class="row" id="row-2">
+          <div class="col-10 cell" id="row2-col1"></div>
+          <div class="col-10 cell" id="row2-col2"></div>
+          <div class="col-10 cell" id="row2-col3"></div>
+          <div class="col-10 cell" id="row2-col4"></div>
+          <div class="col-10 cell" id="row2-col5"></div>
+          <div class="col-10 cell" id="row2-col6"></div>
+          <div class="col-10 cell" id="row2-col7"></div>
+          <div class="col-10 cell" id="row2-col8"></div>
+          <div class="col-10 cell" id="row2-col9"></div>
+          <div class="col-10 cell" id="row2-col10"></div>
+        </div>
+        <div class="row" id="row-3">
+          <div class="col-10 cell" id="row3-col1"></div>
+          <div class="col-10 cell" id="row3-col2"></div>
+          <div class="col-10 cell" id="row3-col3"></div>
+          <div class="col-10 cell" id="row3-col4"></div>
+          <div class="col-10 cell" id="row3-col5"></div>
+          <div class="col-10 cell" id="row3-col6"></div>
+          <div class="col-10 cell" id="row3-col7"></div>
+          <div class="col-10 cell" id="row3-col8"></div>
+          <div class="col-10 cell" id="row3-col9"></div>
+          <div class="col-10 cell" id="row3-col10"></div>
+        </div>
+        <div class="row" id="row-4">
+          <div class="col-10 cell" id="row4-col1"></div>
+          <div class="col-10 cell" id="row4-col2"></div>
+          <div class="col-10 cell" id="row4-col3"></div>
+          <div class="col-10 cell" id="row4-col4"></div>
+          <div class="col-10 cell" id="row4-col5"></div>
+          <div class="col-10 cell" id="row4-col6"></div>
+          <div class="col-10 cell" id="row4-col7"></div>
+          <div class="col-10 cell" id="row4-col8"></div>
+          <div class="col-10 cell" id="row4-col9"></div>
+          <div class="col-10 cell" id="row4-col10"></div>
+        </div>
+        <div class="row" id="row-5">
+          <div class="col-10 cell" id="row5-col1"></div>
+          <div class="col-10 cell" id="row5-col2"></div>
+          <div class="col-10 cell" id="row5-col3"></div>
+          <div class="col-10 cell" id="row5-col4"></div>
+          <div class="col-10 cell" id="row5-col5"></div>
+          <div class="col-10 cell" id="row5-col6"></div>
+          <div class="col-10 cell" id="row5-col7"></div>
+          <div class="col-10 cell" id="row5-col8"></div>
+          <div class="col-10 cell" id="row5-col9"></div>
+          <div class="col-10 cell" id="row5-col10"></div>
+        </div>
+        <div class="row" id="row-6">
+          <div class="col-10 cell" id="row6-col1"></div>
+          <div class="col-10 cell" id="row6-col2"></div>
+          <div class="col-10 cell" id="row6-col3"></div>
+          <div class="col-10 cell" id="row6-col4"></div>
+          <div class="col-10 cell" id="row6-col5"></div>
+          <div class="col-10 cell" id="row6-col6"></div>
+          <div class="col-10 cell" id="row6-col7"></div>
+          <div class="col-10 cell" id="row6-col8"></div>
+          <div class="col-10 cell" id="row6-col9"></div>
+          <div class="col-10 cell" id="row6-col10"></div>
+        </div>
+        <div class="row" id="row-7">
+          <div class="col-10 cell" id="row7-col1"></div>
+          <div class="col-10 cell" id="row7-col2"></div>
+          <div class="col-10 cell" id="row7-col3"></div>
+          <div class="col-10 cell" id="row7-col4"></div>
+          <div class="col-10 cell" id="row7-col5"></div>
+          <div class="col-10 cell" id="row7-col6"></div>
+          <div class="col-10 cell" id="row7-col7"></div>
+          <div class="col-10 cell" id="row7-col8"></div>
+          <div class="col-10 cell" id="row7-col9"></div>
+          <div class="col-10 cell" id="row7-col10"></div>
+        </div>
+        <div class="row" id="row-8">
+          <div class="col-10 cell" id="row8-col1"></div>
+          <div class="col-10 cell" id="row8-col2"></div>
+          <div class="col-10 cell" id="row8-col3"></div>
+          <div class="col-10 cell" id="row8-col4"></div>
+          <div class="col-10 cell" id="row8-col5"></div>
+          <div class="col-10 cell" id="row8-col6"></div>
+          <div class="col-10 cell" id="row8-col7"></div>
+          <div class="col-10 cell" id="row8-col8"></div>
+          <div class="col-10 cell" id="row8-col9"></div>
+          <div class="col-10 cell" id="row8-col10"></div>
+        </div>
+        <div class="row" id="row-9">
+          <div class="col-10 cell" id="row9-col1"></div>
+          <div class="col-10 cell" id="row9-col2"></div>
+          <div class="col-10 cell" id="row9-col3"></div>
+          <div class="col-10 cell" id="row9-col4"></div>
+          <div class="col-10 cell" id="row9-col5"></div>
+          <div class="col-10 cell" id="row9-col6"></div>
+          <div class="col-10 cell" id="row9-col7"></div>
+          <div class="col-10 cell" id="row9-col8"></div>
+          <div class="col-10 cell" id="row9-col9"></div>
+          <div class="col-10 cell" id="row9-col10"></div>
+        </div>
+        <div class="row" id="row-10">
+          <div class="col-10 cell" id="row10-col1"></div>
+          <div class="col-10 cell" id="row10-col2"></div>
+          <div class="col-10 cell" id="row10-col3"></div>
+          <div class="col-10 cell" id="row10-col4"></div>
+          <div class="col-10 cell" id="row10-col5"></div>
+          <div class="col-10 cell" id="row10-col6"></div>
+          <div class="col-10 cell" id="row10-col7"></div>
+          <div class="col-10 cell" id="row10-col8"></div>
+          <div class="col-10 cell" id="row10-col9"></div>
+          <div class="col-10 cell" id="row10-col10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!--JQuery-->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Custom script-->
+    <script src="js/script.js"></script>
+  </body>
+</html>
