@@ -1,13 +1,12 @@
 var gameStarted = false;
 
-// Click on a cell toggles it to "alive".
-//Only necessary BEFORE game starts, then it should be locked somehow (user cannot input again).
+// GAME SETUP : click on a couple tiles to create an "initial state".
 $(".cell").click(function() {
   $(this).toggleClass("alive");
 });
 
+// LAUNCH GAME : hit Enter key.
 document.onkeydown = function(event) {
-  // Game is launched on hitting 'Enter' key.
   if (event.keyCode === 13) {
     console.log("ENTER");
     if (gameStarted) {
@@ -17,39 +16,52 @@ document.onkeydown = function(event) {
       launchGame();
     }
   }
-
-  // New generation loaded when hitting 'Space'.
+  // 'Space' bar => Triggers a NEW GENERATION.
   if (event.keyCode === 32) {
     console.log("SPACE");
     event.preventDefault();
     nextGen();
   }
 
-  // Reset board when hitting 'Backspace'.
+  // RESET BOARD : hit 'Backspace' key.
   if (event.keyCode === 8) {
     console.log("BACKSPACE");
     resetBoard();
-    gameStarted = false;
+    updateCounter();
   }
 };
 
 var initialState = [
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,]
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,]
 ];
 
-// Creates a snapShot of the current CSS state of the board into a temporary matrix
+// Creates a snapShot of the board state by checking which cells are shown as 'alive', records stats in a matrix.
 function snapShot(matrix) {
-  for (var i = 0; i < 10; i++) {
-    for (var j = 0; j < 10; j++) {
+  for (var i = 0; i < 24; i++) {
+    for (var j = 0; j < 24; j++) {
       if ($("#row" + (i + 1) + "-col" + (j + 1) + "").hasClass("alive")) {
         matrix[i][j] = 1;
       } else {
@@ -59,50 +71,83 @@ function snapShot(matrix) {
   }
 }
 
-// Action that takes a snapShot of the initial state and launches the "game".
-// Only input possibilities from now on : a) iterate to next generation, or b) reset the board.
+var generations = 0;
+
+// Game is started here. Initial state is recorded until game ends.
 function launchGame() {
   snapShot(initialState);
-  console.log("INITIAL STATE", initialState);
+  console.log("INITIAL STATE: ", initialState);
   gameStarted = true;
+  generations = 0;
   nextGen();
 }
 
 var currentState = [
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,]
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,]
 ];
 
 var nextState = [
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,]
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,],
+  [, , , , , , , , , , , , , , , , , , , , , , ,]
 ];
 
 // Launches new iteration on whole board
 function nextGen() {
   snapShot(currentState);
-  console.log("CURRENT STATE", currentState);
+  console.log("CURRENT STATE: ", currentState);
 
-  for (var i = 0; i < 10; i++) {
-    for (var j = 0; j < 10; j++) {
+  for (var i = 0; i < 24; i++) {
+    for (var j = 0; j < 24; j++) {
       var adj = countAdj(currentState, i, j);
-      if (adj >= 3) {
+      // RULES OF LIFE
+      if (adj > 3) {
+        nextState[i][j] = 0;
+      } else if (adj === 3) {
         nextState[i][j] = 1;
       } else if (adj === 2 && currentState[i][j] === 1) {
         nextState[i][j] = 1;
@@ -113,6 +158,8 @@ function nextGen() {
   }
   console.log("NEXT STATE:", nextState);
   reDraw();
+  generations++;
+  updateCounter();
 }
 
 // Counts adjacent "alive" cells & return number
@@ -120,7 +167,7 @@ function countAdj(matrix, i, j) {
   var adj = 0;
 
   // 1: index is in the "middle" of the matrix
-  if (i > 0 && i < 9 && j > 0 && j < 9) {
+  if (i > 0 && i < 23 && j > 0 && j < 23) {
     // up-left
     if (matrix[i - 1][j - 1] === 1) {
       adj++;
@@ -155,7 +202,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 2: top-row of the matrix, NOT a corner
-  else if (i === 0 && j > 0 && j < 9) {
+  else if (i === 0 && j > 0 && j < 23) {
     // right
     if (matrix[i][j + 1] === 1) {
       adj++;
@@ -178,7 +225,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 3: bottom-row of the matrix, NOT a corner
-  else if (i === 9 && j > 0 && j < 9) {
+  else if (i === 23 && j > 0 && j < 23) {
     // up-left
     if (matrix[i - 1][j - 1] === 1) {
       adj++;
@@ -201,7 +248,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 4: left-column of the matrix, NOT a corner
-  else if (i > 0 && i < 9 && j === 0) {
+  else if (i > 0 && i < 23 && j === 0) {
     // up
     if (matrix[i - 1][j] === 1) {
       adj++;
@@ -224,7 +271,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 5: right-column of the matrix, NOT a corner
-  else if (i > 0 && i < 9 && j === 9) {
+  else if (i > 0 && i < 23 && j === 23) {
     // up-left
     if (matrix[i - 1][j - 1] === 1) {
       adj++;
@@ -262,7 +309,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 7: top-right corner
-  else if (i === 0 && j === 9) {
+  else if (i === 0 && j === 23) {
     // bottom
     if (matrix[i + 1][j] === 1) {
       adj++;
@@ -277,7 +324,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 8: bottom-right corner
-  else if (i === 9 && j === 9) {
+  else if (i === 23 && j === 23) {
     // up-left
     if (matrix[i - 1][j - 1] === 1) {
       adj++;
@@ -292,7 +339,7 @@ function countAdj(matrix, i, j) {
     }
   }
   // 9: bottom-left corner
-  else if (i === 9 && j === 0) {
+  else if (i === 23 && j === 0) {
     // up
     if (matrix[i - 1][j] === 1) {
       adj++;
@@ -310,24 +357,11 @@ function countAdj(matrix, i, j) {
   return adj;
 }
 
-var nextState = [
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,],
-  [, , , , , , , , ,]
-];
-
 // Redraws the entire board (adds or removes "alive" class when necessary)
 function reDraw() {
   console.log("REDRAWING");
-  for (var i = 0; i < 10; i++) {
-    for (var j = 0; j < 10; j++) {
+  for (var i = 0; i < 24; i++) {
+    for (var j = 0; j < 24; j++) {
       if (nextState[i][j] === 1) {
         $("#row" + (i + 1) + "-col" + (j + 1) + "").addClass("alive");
       } else if (nextState[i][j] === 0) {
@@ -335,22 +369,41 @@ function reDraw() {
       }
     }
   }
-  //reInitialize(currentState);
-  //reInitialize(nextState);
+  reInitialize(currentState);
+  reInitialize(nextState);
+  congrats();
 }
 
 // ReInitialize all values of a matrix to 0
 function reInitialize(matrix) {
-  for (var i = 0; i < 10; i++) {
-    for (var j = 0; j < 10; j++) {
+  for (var i = 0; i < 24; i++) {
+    for (var j = 0; j < 24; j++) {
       matrix[i][j] = 0;
     }
   }
 }
 
-//-------------------------------------
+function resetBoard() {
+  reInitialize(nextState);
+  reDraw();
+  generations = 0;
+  gameStarted = false;
+}
 
-// declaring variable of alive cells
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
+// alive cells
 var alive = $(".alive");
 
 // close icon in modal
@@ -359,29 +412,11 @@ var closeicon = $(".close");
 // declare modal
 var modal = $(".popup");
 
-function startGame() {
-  for (var i = 0; i < cards.length; i++) {
-    deck.innerHTML = "";
-    [].forEach.call(cards, function(item) {
-      deck.appendChild(item);
-    });
-    cards[i].classList.remove("show", "open", "match", "disabled");
-  }
-  // reset moves
-  moves = 0;
-  counter.innerHTML = moves;
-  // reset rating
-  for (var i = 0; i < stars.length; i++) {
-    stars[i].style.color = "#FFD700";
-    stars[i].style.visibility = "visible";
-  }
-  //reset timer
-  second = 0;
-  minute = 0;
-  hour = 0;
-  var timer = document.querySelector(".timer");
-  timer.innerHTML = "0 mins 0 secs";
-  clearInterval(interval);
+// COUNTER : counts the number of generations since game start
+var counter = $(".counter");
+
+function updateCounter() {
+  counter.html(generations);
 }
 
 // @description toggles open and show class to display cards
@@ -390,49 +425,6 @@ var displayCard = function() {
   this.classList.toggle("show");
   this.classList.toggle("disabled");
 };
-
-// @description add opened cards to OpenedCards list and check if cards are match or not
-function cardOpen() {
-  openedCards.push(this);
-  var len = openedCards.length;
-  if (len === 2) {
-    moveCounter();
-    if (openedCards[0].type === openedCards[1].type) {
-      matched();
-    } else {
-      unmatched();
-    }
-  }
-}
-
-// @description when cards match
-function matched() {
-  openedCards[0].classList.add("match", "disabled");
-  openedCards[1].classList.add("match", "disabled");
-  openedCards[0].classList.remove("show", "open", "no-event");
-  openedCards[1].classList.remove("show", "open", "no-event");
-  openedCards = [];
-}
-
-// description when cards don't match
-function unmatched() {
-  openedCards[0].classList.add("unmatched");
-  openedCards[1].classList.add("unmatched");
-  disable();
-  setTimeout(function() {
-    openedCards[0].classList.remove("show", "open", "no-event", "unmatched");
-    openedCards[1].classList.remove("show", "open", "no-event", "unmatched");
-    enable();
-    openedCards = [];
-  }, 1100);
-}
-
-// @description disable cards temporarily
-function disable() {
-  Array.prototype.filter.call(cards, function(card) {
-    card.classList.add("disabled");
-  });
-}
 
 // @description enable cards and disable matched cards
 function enable() {
@@ -444,43 +436,10 @@ function enable() {
   });
 }
 
-// @description count player's moves
-function moveCounter() {
-  moves++;
-  counter.innerHTML = moves;
-
-  // setting rates based on moves
-  if (moves > 8 && moves < 12) {
-    for (i = 0; i < 3; i++) {
-      if (i > 1) {
-        stars[i].style.visibility = "collapse";
-      }
-    }
-  } else if (moves > 13) {
-    for (i = 0; i < 3; i++) {
-      if (i > 0) {
-        stars[i].style.visibility = "collapse";
-      }
-    }
-  }
-}
-
-// @description congratulations when all cards match, show modal and moves, time and rating
-function congratulations() {
-  if (matchedCard.length == 16) {
-    clearInterval(interval);
-    finalTime = timer.innerHTML;
-
-    // show congratulations modal
-    modal.classList.add("show");
-
-    // declare star rating variable
-    var starRating = document.querySelector(".stars").innerHTML;
-
-    //showing move, rating, time on modal
-    document.getElementById("finalMove").innerHTML = moves;
-    document.getElementById("starRating").innerHTML = starRating;
-    document.getElementById("totalTime").innerHTML = finalTime;
+// CONGRATULATIONS : shown if reaches >100 generations
+function congrats() {
+  if (generations >= 100 && alive.length > 0) {
+    modal.addClass("show");
 
     //closeicon on modal
     closeModal();
@@ -491,22 +450,12 @@ function congratulations() {
 function closeModal() {
   closeicon.addEventListener("click", function(e) {
     modal.classList.remove("show");
-    startGame();
+    playAgain();
   });
 }
 
 // @desciption for user to play Again
 function playAgain() {
-  modal.classList.remove("show");
-  startGame();
+  modal.removeClass("show");
+  resetBoard();
 }
-
-/*
-// loop to add event listeners to each card
-for (var i = 0; i < cards.length; i++) {
-  card = cards[i];
-  card.addEventListener("click", displayCard);
-  card.addEventListener("click", cardOpen);
-  card.addEventListener("click", congratulations);
-}
-*/
