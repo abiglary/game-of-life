@@ -17,6 +17,7 @@ var directions = [
   [1, 0],
   [1, 1]
 ];
+var notes = ["C", "D", "E", "F", "G", "A", "B"];
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS ------------------------------------------
@@ -114,7 +115,8 @@ function draw() {
       }
     }
   }
-  congrats();
+  sound();
+  //congrats();
 }
 
 // resets all values of a matrix to 0
@@ -132,6 +134,17 @@ function resetBoard() {
   draw();
   generations = 0;
   gameStarted = false;
+}
+
+// sounds
+function sound() {
+  for (var i = 0; i < size; i++) {
+    if (nextState[i].indexOf(1) > 0) {
+      var quo = Math.floor(i / 7) + 3;
+      var rem = i % 7;
+      Synth.play(0, notes[rem], quo, 2);
+    }
+  }
 }
 
 // -----------------------------------------------------------------------

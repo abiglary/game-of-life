@@ -30,7 +30,6 @@ body {
 }
 
 .board {
-  width: 75%;
   background: lightgrey;
   padding: 1rem;
   border-radius: 4px;
@@ -40,7 +39,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 0 3em;
+  margin: 0 0 2em;
 }
 
 .row {
@@ -253,42 +252,5 @@ body {
 
   to {
     transform: scale3d(1, 1, 1);
-  }
-}
-
-/****** Media queries
-***************************/
-
-@media (max-width: 320px) {
-  .board {
-    width: 85%;
-  }
-
-  .board .cell {
-    height: 1rem;
-    width: 1rem;
-  }
-}
-
-/* For Tablets and larger screens
-****************/
-
-@media (min-width: 768px) {
-  .container {
-    font-size: 22px;
-  }
-
-  .board {
-    width: 660px;
-    height: 680px;
-  }
-
-  .board .card {
-    height: 125px;
-    width: 125px;
-  }
-
-  #congrats {
-    width: 60%;
   }
 }
