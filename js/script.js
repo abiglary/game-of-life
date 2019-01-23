@@ -1,67 +1,42 @@
+// -----------------------------------------------------------------------
+// ------------------ VARIABLES ------------------------------------------
+
 var gameStarted = false;
-
-// GAME SETUP : click on a couple tiles to create an "initial state".
-$(".cell").click(function() {
-  $(this).toggleClass("alive");
-});
-
-// LAUNCH GAME : hit Enter key.
-document.onkeydown = function(event) {
-  if (event.keyCode === 13) {
-    console.log("ENTER");
-    if (gameStarted) {
-      return;
-    } else {
-      console.log("LAUNCH GAME");
-      launchGame();
-    }
-  }
-  // 'Space' bar => Triggers a NEW GENERATION.
-  if (event.keyCode === 32) {
-    console.log("SPACE");
-    event.preventDefault();
-    nextGen();
-  }
-
-  // RESET BOARD : hit 'Backspace' key.
-  if (event.keyCode === 8) {
-    console.log("BACKSPACE");
-    resetBoard();
-    updateCounter();
-  }
-};
-
-var initialState = [
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,]
+var generations = 0;
+var size = 24;
+var initialState = generateGrid(size);
+var currentState = generateGrid(size);
+var nextState = generateGrid(size);
+var directions = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1]
 ];
 
-// Creates a snapShot of the board state by checking which cells are shown as 'alive', records stats in a matrix.
-function snapShot(matrix) {
-  for (var i = 0; i < 24; i++) {
-    for (var j = 0; j < 24; j++) {
+// -----------------------------------------------------------------------
+// ------------------ FUNCTIONS ------------------------------------------
+
+// generates an empty matrix
+function generateGrid(size) {
+  var grid = [];
+  for (var row = 0; row < size; row++) {
+    grid[row] = [];
+    for (var col = 0; col < size; col++) {
+      grid[row][col] = 0;
+    }
+  }
+  return grid;
+}
+
+// records a snapshot of the board state
+function snapshot(matrix) {
+  for (var i = 0; i < matrix.length; i++) {
+    for (var j = 0; j < matrix[i].length; j++) {
       if ($("#row" + (i + 1) + "-col" + (j + 1) + "").hasClass("alive")) {
         matrix[i][j] = 1;
       } else {
@@ -71,80 +46,24 @@ function snapShot(matrix) {
   }
 }
 
-var generations = 0;
-
-// Game is started here. Initial state is recorded until game ends.
-function launchGame() {
-  snapShot(initialState);
+// records initial state, resets any counters and launches 1st generation
+function launch() {
+  snapshot(initialState);
   console.log("INITIAL STATE: ", initialState);
   gameStarted = true;
   generations = 0;
-  nextGen();
+  next();
 }
 
-var currentState = [
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,]
-];
-
-var nextState = [
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,],
-  [, , , , , , , , , , , , , , , , , , , , , , ,]
-];
-
-// Launches new iteration on whole board
-function nextGen() {
-  snapShot(currentState);
+// moves up to a next generation
+function next() {
+  snapshot(currentState);
   console.log("CURRENT STATE: ", currentState);
 
-  for (var i = 0; i < 24; i++) {
-    for (var j = 0; j < 24; j++) {
-      var adj = countAdj(currentState, i, j);
-      // RULES OF LIFE
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      var adj = count(i, j);
+      // Rules of life & death
       if (adj > 3) {
         nextState[i][j] = 0;
       } else if (adj === 3) {
@@ -157,211 +76,37 @@ function nextGen() {
     }
   }
   console.log("NEXT STATE:", nextState);
-  reDraw();
+  draw();
   generations++;
-  updateCounter();
+  update();
 }
 
-// Counts adjacent "alive" cells & return number
-function countAdj(matrix, i, j) {
+// checks if index is still inbounds
+function inbounds(r, c) {
+  return r >= 0 && r < size && c >= 0 && c < size;
+}
+
+// counts how many adjacent "alive" cells
+function count(i, j) {
   var adj = 0;
-
-  // 1: index is in the "middle" of the matrix
-  if (i > 0 && i < 23 && j > 0 && j < 23) {
-    // up-left
-    if (matrix[i - 1][j - 1] === 1) {
-      adj++;
-    }
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // up-right
-    if (matrix[i - 1][j + 1] === 1) {
-      adj++;
-    }
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-    // bottom-right
-    if (matrix[i + 1][j + 1] === 1) {
-      adj++;
-    }
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-    // bottom-left
-    if (matrix[i + 1][j - 1] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
+  for (var k = 0; k < directions.length; k++) {
+    var direction = directions[k];
+    var row = direction[0] + i;
+    var col = direction[1] + j;
+    if (inbounds(row, col)) {
+      if (currentState[row][col] === 1) {
+        adj++;
+      }
     }
   }
-  // 2: top-row of the matrix, NOT a corner
-  else if (i === 0 && j > 0 && j < 23) {
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-    // bottom-right
-    if (matrix[i + 1][j + 1] === 1) {
-      adj++;
-    }
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-    // bottom-left
-    if (matrix[i + 1][j - 1] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
-    }
-  }
-  // 3: bottom-row of the matrix, NOT a corner
-  else if (i === 23 && j > 0 && j < 23) {
-    // up-left
-    if (matrix[i - 1][j - 1] === 1) {
-      adj++;
-    }
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // up-right
-    if (matrix[i - 1][j + 1] === 1) {
-      adj++;
-    }
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
-    }
-  }
-  // 4: left-column of the matrix, NOT a corner
-  else if (i > 0 && i < 23 && j === 0) {
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // up-right
-    if (matrix[i - 1][j + 1] === 1) {
-      adj++;
-    }
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-    // bottom-right
-    if (matrix[i + 1][j + 1] === 1) {
-      adj++;
-    }
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-  }
-  // 5: right-column of the matrix, NOT a corner
-  else if (i > 0 && i < 23 && j === 23) {
-    // up-left
-    if (matrix[i - 1][j - 1] === 1) {
-      adj++;
-    }
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-    // bottom-left
-    if (matrix[i + 1][j - 1] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
-    }
-  }
-  // 6: top-left corner
-  else if (i === 0 && j === 0) {
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-    // bottom-right
-    if (matrix[i + 1][j + 1] === 1) {
-      adj++;
-    }
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-  }
-  // 7: top-right corner
-  else if (i === 0 && j === 23) {
-    // bottom
-    if (matrix[i + 1][j] === 1) {
-      adj++;
-    }
-    // bottom-left
-    if (matrix[i + 1][j - 1] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
-    }
-  }
-  // 8: bottom-right corner
-  else if (i === 23 && j === 23) {
-    // up-left
-    if (matrix[i - 1][j - 1] === 1) {
-      adj++;
-    }
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // left
-    if (matrix[i][j - 1] === 1) {
-      adj++;
-    }
-  }
-  // 9: bottom-left corner
-  else if (i === 23 && j === 0) {
-    // up
-    if (matrix[i - 1][j] === 1) {
-      adj++;
-    }
-    // up-right
-    if (matrix[i - 1][j + 1] === 1) {
-      adj++;
-    }
-    // right
-    if (matrix[i][j + 1] === 1) {
-      adj++;
-    }
-  }
-
   return adj;
 }
 
-// Redraws the entire board (adds or removes "alive" class when necessary)
-function reDraw() {
-  console.log("REDRAWING");
-  for (var i = 0; i < 24; i++) {
-    for (var j = 0; j < 24; j++) {
+// draws the entire board with updated values
+function draw() {
+  console.log("DRAWING");
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
       if (nextState[i][j] === 1) {
         $("#row" + (i + 1) + "-col" + (j + 1) + "").addClass("alive");
       } else if (nextState[i][j] === 0) {
@@ -369,39 +114,60 @@ function reDraw() {
       }
     }
   }
-  reInitialize(currentState);
-  reInitialize(nextState);
   congrats();
 }
 
-// ReInitialize all values of a matrix to 0
-function reInitialize(matrix) {
-  for (var i = 0; i < 24; i++) {
-    for (var j = 0; j < 24; j++) {
+// resets all values of a matrix to 0
+function reset(matrix) {
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
       matrix[i][j] = 0;
     }
   }
 }
 
+// global reset
 function resetBoard() {
-  reInitialize(nextState);
-  reDraw();
+  reset(nextState);
+  draw();
   generations = 0;
   gameStarted = false;
 }
 
+// -----------------------------------------------------------------------
+// ------------------- INPUTS --------------------------------------------
+
+$(".cell").click(function() {
+  $(this).toggleClass("alive");
+});
+
+document.onkeydown = function(event) {
+  if (event.keyCode === 13) {
+    console.log("ENTER");
+    if (gameStarted) {
+      return;
+    } else {
+      console.log("LAUNCH GAME");
+      launch();
+    }
+  }
+  if (event.keyCode === 32) {
+    console.log("SPACE");
+    event.preventDefault();
+    next();
+  }
+  if (event.keyCode === 8) {
+    console.log("BACKSPACE");
+    resetBoard();
+    update();
+  }
+};
+
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+// OLD CODE
 
 // alive cells
 var alive = $(".alive");
@@ -415,7 +181,7 @@ var modal = $(".popup");
 // COUNTER : counts the number of generations since game start
 var counter = $(".counter");
 
-function updateCounter() {
+function update() {
   counter.html(generations);
 }
 

@@ -7,7 +7,19 @@ body {
 }
 
 body {
+  font-family: "VT323", monospace;
   font-size: 16px;
+  background: #000000; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #434343,
+    #000000
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #434343,
+    #000000
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .container {
@@ -82,35 +94,14 @@ body {
  * Styles for the Score Panel
  */
 
-.score-panel {
+.panel {
   text-align: left;
   margin-bottom: 10px;
 }
 
-.score-panel .stars {
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-  margin: 0 5px 0 0;
-}
-
-.score-panel .stars li {
-  list-style: none;
-  display: inline-block;
-}
-
-.score-panel .restart {
+.panel .restart {
   float: right;
   cursor: pointer;
-}
-
-.fa-star {
-  color: #ffd700;
-}
-
-.timer {
-  display: inline-block;
-  margin: 0 1rem;
 }
 
 /*
@@ -269,13 +260,13 @@ body {
 ***************************/
 
 @media (max-width: 320px) {
-  .deck {
+  .board {
     width: 85%;
   }
 
-  .deck .card {
-    height: 4.7rem;
-    width: 4.7rem;
+  .board .cell {
+    height: 1rem;
+    width: 1rem;
   }
 }
 
@@ -287,17 +278,17 @@ body {
     font-size: 22px;
   }
 
-  .deck {
+  .board {
     width: 660px;
     height: 680px;
   }
 
-  .deck .card {
+  .board .card {
     height: 125px;
     width: 125px;
   }
 
-  .popup {
+  #congrats {
     width: 60%;
   }
 }

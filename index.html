@@ -5,15 +5,17 @@
     <title>Game Of Life</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css" />
+
   </head>
   <body>
     <div class="container">
       <header><h1>Game Of Life</h1></header>
-
-      <section class="score-panel">
-        Generations : <span class="counter">0</span>
-        <div class="restart" onclick="startGame()">
+      <section class="panel">
+        <h2>Generations : <span class="counter">0</span></h2>
+        <div class="restart" onclick="launch()">
           <i class="fa fa-repeat"></i>
         </div>
       </section>
@@ -645,6 +647,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Congratulations modal -->
+    <div id="congrats">
+        <h2>Congratulations, your initial state went over <span id=gen> </span>  generations! 🎉</h2>
+        <a class="close" href=# >×</a>
+    </div>
+
 
     <!--JQuery-->
     <script
