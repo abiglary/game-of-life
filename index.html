@@ -5,27 +5,77 @@
     <title>Game Of Life</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <link
       href="https://fonts.googleapis.com/css?family=Rajdhani"
       rel="stylesheet"
     />
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+
     <link
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/style.css" />
+
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <div class="container">
       <header><h1>Game Of Life</h1></header>
+
+      <section>
+        <div id="size-modal" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">What size should your array be?</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      >(Optional. Please stay below 100.)</span
+                    >
+                  </div>
+                  <input type="number" id="new-size" class="form-control" />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="apply-size" class="btn btn-primary">
+                  Apply new array size
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="panel">
         <div>
-          <h2>Generations : <span class="counter">0</span></h2>
+          <spa>Generations : <span class="counter">0</span></spa>
         </div>
-        <div class="launch" onclick="launch()">
-          <i class="fa fa-repeat" aria-hidden="true"></i>
+        <div class="play" onclick="launch()">
+          <span> Play </span><i class="fa fa-play"></i>
         </div>
         <div class="restart" onclick="resetBoard()">
           <span> Reset </span><i class="fa fa-repeat"></i>
@@ -54,8 +104,17 @@
       crossorigin="anonymous"
     ></script>
 
-    <!--Custom script-->
+    <!--Bootstrap-->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--AudioSynth-->
     <script src="./audiosynth/audiosynth.js"></script>
+
+    <!--Custom script-->
     <script src="js/script.js"></script>
   </body>
 </html>

@@ -3,10 +3,12 @@
 
 var gameStarted = false;
 var generations = 0;
-var size = 50;
+var size = 30;
+var sizeChanged = false;
 var initialState = generateGrid(size);
 var currentState = generateGrid(size);
 var nextState = generateGrid(size);
+//var cells = $(".cell");
 var directions = [
   [-1, -1],
   [-1, 0],
@@ -27,21 +29,38 @@ var musics = [
 ];
 var ref = Math.floor(Math.random() * musics.length);
 var randomMusic = musics[ref];
-
-var board = document.getElementById("board");
-for (var i = 0; i < size; i++) {
-  $("#board").append($("<div>", { class: "row", id: "row" + i }));
-  for (var j = 0; j < size; j++) {
-    $("#row" + i + "").append(
-      $("<div>", { class: "cell", id: "row" + i + "-col" + j })
-    );
-  }
-}
-
 var alive = $(".alive");
+var autogame = false;
+var counter = $(".counter");
 
 // -----------------------------------------------------------------------
-// ------------------ FUNCTIONS ------------------------------------------
+// ------------------ FUNCTIONS DECLARATIONS -----------------------------
+
+// generate array once given a defined size
+function generateBoard(size) {
+  $("#board").empty();
+  for (var i = 0; i < size; i++) {
+    $("#board").append($("<div>", { class: "row", id: "row" + i }));
+    for (var j = 0; j < size; j++) {
+      $("#row" + i + "").append(
+        $("<div>", { class: "cell", id: "row" + i + "-col" + j })
+      );
+    }
+  }
+  initialState = generateGrid(size);
+  currentState = generateGrid(size);
+  nextState = generateGrid(size);
+
+  if (sizeChanged) {
+    $(".cell").on("click", event => {
+      console.log("REDEFINED CLICK FUNCTION 2");
+      console.log(event);
+      console.log(event.target);
+      console.log(event.currentTarget);
+      $(event.target).toggleClass("alive");
+    });
+  }
+}
 
 // generates an empty matrix
 function generateGrid(size) {
@@ -59,7 +78,7 @@ function generateGrid(size) {
 function snapshot(matrix) {
   for (var i = 0; i < matrix.length; i++) {
     for (var j = 0; j < matrix[i].length; j++) {
-      if ($("#row" + (i + 1) + "-col" + (j + 1) + "").hasClass("alive")) {
+      if ($("#row" + i + "-col" + j + "").hasClass("alive")) {
         matrix[i][j] = 1;
       } else {
         matrix[i][j] = 0;
@@ -82,10 +101,24 @@ function launch() {
   } else if (ref === 3) {
     audio.currentTime = 17;
   }
+
+  autogame = true;
+
+  var intervalId = setInterval(function() {
+    next();
+    alive = $(".alive");
+    if (alive.length === 0) {
+      clearInterval(intervalId);
+      autogame = false;
+    }
+  }, 100);
 }
 
 // moves up to a next generation
 function next() {
+  if (generations === 0) {
+    snapshot(initialState);
+  }
   snapshot(currentState);
   console.log("CURRENT STATE: ", currentState);
 
@@ -141,14 +174,20 @@ function draw() {
   for (var i = 0; i < size; i++) {
     for (var j = 0; j < size; j++) {
       if (nextState[i][j] === 1) {
-        $("#row" + (i + 1) + "-col" + (j + 1) + "").addClass("alive");
+        $("#row" + i + "-col" + j + "").addClass("alive");
       } else if (nextState[i][j] === 0) {
-        $("#row" + (i + 1) + "-col" + (j + 1) + "").removeClass("alive");
+        $("#row" + i + "-col" + j + "").removeClass("alive");
       }
     }
   }
-  //sound();
+  if (!autogame) {
+    sound();
+  }
   //congrats();
+}
+
+function updateCounter() {
+  counter.html(generations);
 }
 
 // resets all values of a matrix to 0
@@ -163,18 +202,19 @@ function reset(matrix) {
 // global reset
 function resetBoard() {
   reset(nextState);
-  draw();
   generations = 0;
   gameStarted = false;
+  draw();
 }
 
-// sounds
+// triggers sounds at each iteration
 function sound() {
   for (var i = 0; i < size; i++) {
     if (nextState[i].indexOf(1) > 0) {
       var q = Math.floor(i / 7) + 3;
       var r = i % 7;
-      Synth.play(1, notes[r], q, 5);
+      Synth.setVolume(0.4);
+      Synth.play(0, notes[r], q, 2);
     }
   }
 }
@@ -184,11 +224,57 @@ document.getElementById("audioDiv").innerHTML =
   '<audio id="audioPlayer" src=' + randomMusic + ">";
 var audio = document.getElementById("audioPlayer");
 
+//---------------------------------------------------------------------------------------------
+//---------------------------- INITIALIZATION -------------------------------------------------
+
+// generate board with default size (30)
+generateBoard(size);
+
+// displays modal on page load
+$(window).on("load", function() {
+  $("#size-modal").modal("show");
+});
+
+// inputs new size
+$("#apply-size").on("click", function(event) {
+  if ($("#new-size").val() < 1) {
+    alert("Incorrect value - has to be > 0");
+  } else {
+    sizeChanged = true;
+    size = $("#new-size").val();
+    generateBoard(size);
+  }
+});
+
+//---------------------------------------------------------------------------------------------
+
+// OLD CODE
+
+// CONGRATULATIONS : shown if reaches >100 generations
+function congrats() {
+  if (generations >= 100 && alive.length > 0) {
+    modal.addClass("show");
+
+    //closeicon on modal
+    closeModal();
+  }
+}
+
+//  play Again
+function playAgain() {
+  modal.removeClass("show");
+  resetBoard();
+}
+
 // -----------------------------------------------------------------------
 // ------------------- INPUTS --------------------------------------------
 
-$(".cell").click(function() {
-  $(this).toggleClass("alive");
+$(".cell").on("click", event => {
+  console.log("REDEFINED CLICK FUNCTION");
+  console.log(event);
+  console.log(event.target);
+  console.log(event.currentTarget);
+  $(event.target).toggleClass("alive");
 });
 
 document.onkeydown = function(event) {
@@ -212,66 +298,3 @@ document.onkeydown = function(event) {
     updateCounter();
   }
 };
-
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-
-// OLD CODE
-
-// alive cells
-var alive = $(".alive");
-
-// close icon in modal
-var closeicon = $(".close");
-
-// declare modal
-var modal = $(".popup");
-
-// COUNTER : counts the number of generations since game start
-var counter = $(".counter");
-
-function updateCounter() {
-  counter.html(generations);
-}
-
-// @description toggles open and show class to display cards
-var displayCard = function() {
-  this.classList.toggle("open");
-  this.classList.toggle("show");
-  this.classList.toggle("disabled");
-};
-
-// @description enable cards and disable matched cards
-function enable() {
-  Array.prototype.filter.call(cards, function(card) {
-    card.classList.remove("disabled");
-    for (var i = 0; i < matchedCard.length; i++) {
-      matchedCard[i].classList.add("disabled");
-    }
-  });
-}
-
-// CONGRATULATIONS : shown if reaches >100 generations
-function congrats() {
-  if (generations >= 100 && alive.length > 0) {
-    modal.addClass("show");
-
-    //closeicon on modal
-    closeModal();
-  }
-}
-
-// @description close icon on modal
-function closeModal() {
-  closeicon.addEventListener("click", function(e) {
-    modal.classList.remove("show");
-    playAgain();
-  });
-}
-
-// @desciption for user to play Again
-function playAgain() {
-  modal.removeClass("show");
-  resetBoard();
-}
