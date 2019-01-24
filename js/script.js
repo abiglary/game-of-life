@@ -8,7 +8,6 @@ var sizeChanged = false;
 var initialState = generateGrid(size);
 var currentState = generateGrid(size);
 var nextState = generateGrid(size);
-//var cells = $(".cell");
 var directions = [
   [-1, -1],
   [-1, 0],
@@ -27,11 +26,13 @@ var musics = [
   "./mp3/strauss-zarathustra.ogg",
   "./mp3/bumblebee.ogg"
 ];
-var ref = Math.floor(Math.random() * musics.length);
-var randomMusic = musics[ref];
+var rand = Math.floor(Math.random() * musics.length);
+var randomMusic = musics[rand];
 var alive = $(".alive");
 var autogame = false;
 var counter = $(".counter");
+var lastgen = 0;
+var stalls = 0;
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS DECLARATIONS -----------------------------
@@ -54,9 +55,6 @@ function generateBoard(size) {
   if (sizeChanged) {
     $(".cell").on("click", event => {
       console.log("REDEFINED CLICK FUNCTION 2");
-      console.log(event);
-      console.log(event.target);
-      console.log(event.currentTarget);
       $(event.target).toggleClass("alive");
     });
   }
@@ -96,30 +94,24 @@ function launch() {
   generations = 0;
   console.log("MUSIC: ", audio);
   audio.play();
-  if (ref === 0) {
+  if (rand === 0) {
     audio.currentTime = 205;
-  } else if (ref === 3) {
+  } else if (rand === 3) {
     audio.currentTime = 17;
   }
-
   autogame = true;
-
   var intervalId = setInterval(function() {
     next();
-    alive = $(".alive");
-    if (alive.length === 0) {
-      clearInterval(intervalId);
-      autogame = false;
-    }
-  }, 100);
+  }, 200);
 }
 
-// moves up to a next generation
+// forwards to next generation
 function next() {
   if (generations === 0) {
     snapshot(initialState);
   }
   snapshot(currentState);
+  lastgen = $(".alive").length;
   console.log("CURRENT STATE: ", currentState);
 
   for (var i = 0; i < size; i++) {
@@ -141,10 +133,44 @@ function next() {
   draw();
   generations++;
   updateCounter();
+  stillAlive();
+}
+
+// checks if board is still alive, if not then ends game - same if nb alive stalls for 20 turns (then probably only oscillators are left)
+function stillAlive() {
   alive = $(".alive");
   if (alive.length === 0) {
-    audio.pause();
+    autogame = false;
+    pause();
+    $("#dead-modal").modal("show");
+  } else {
+    console.log("STILL ALIVE");
   }
+
+  if (alive.length - lastgen === 0) {
+    stalls++;
+
+    if (stalls > 20) {
+      pause();
+      $("#stuck-modal").modal("show");
+    }
+  } else {
+    stalls = 0;
+  }
+}
+
+// pause function
+function pause() {
+  audio.pause();
+  clearInterval(intervalId);
+}
+
+// resume function
+function pause() {
+  audio.play();
+  var intervalId = setInterval(function() {
+    next();
+  }, 200);
 }
 
 // checks if index is still inbounds
@@ -183,7 +209,6 @@ function draw() {
   if (!autogame) {
     sound();
   }
-  //congrats();
 }
 
 function updateCounter() {
@@ -247,18 +272,7 @@ $("#apply-size").on("click", function(event) {
 });
 
 //---------------------------------------------------------------------------------------------
-
-// OLD CODE
-
-// CONGRATULATIONS : shown if reaches >100 generations
-function congrats() {
-  if (generations >= 100 && alive.length > 0) {
-    modal.addClass("show");
-
-    //closeicon on modal
-    closeModal();
-  }
-}
+//------------------------------ END OF GAME --------------------------------------------------
 
 //  play Again
 function playAgain() {

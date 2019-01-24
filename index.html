@@ -31,7 +31,8 @@
     <div class="container">
       <header><h1>Game Of Life</h1></header>
 
-      <section>
+      <!-- modal 1 : change size (optional) -->
+      <section id="modal1">
         <div id="size-modal" class="modal" tabindex="-1" role="dialog">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -77,6 +78,9 @@
         <div class="play" onclick="launch()">
           <span> Play </span><i class="fa fa-play"></i>
         </div>
+        <div class="pause" onclick="pause()">
+          <span> Pause </span><i class="fa fa-pause"></i>
+        </div>
         <div class="restart" onclick="resetBoard()">
           <span> Reset </span><i class="fa fa-repeat"></i>
         </div>
@@ -87,15 +91,86 @@
       <!-- Audio -->
       <div id="audioDiv"></div>
 
-      <!-- Congratulations (modal) -->
-      <div id="congrats">
-        <h2>
-          Congratulations, your initial state went over
-          <span id="gen"> </span> generations! 🎉
-        </h2>
-        <a class="close" href="#">×</a>
-      </div>
+      <!-- modal 2 : all dead -->
+      <section id="modal2">
+        <div id="dead-modal" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">End of Game : DEATH</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p>This was your initial state</p>
+                <img
+                  src="./images/initial-state-demo.png"
+                  alt="initial-state"
+                  class="img-thumbnail"
+                />
+              </div>
+              <div class="modal-footer">
+                <p>
+                  Congrats for reaching
+                  <span class="counter">0</span> generations!
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
+
+      <!-- modal 3 : stuck forever -->
+      <section id="modal3">
+            <div id="stuck-modal" class="modal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">End of Game : INFINITE LOOP</h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>This was your initial state</p>
+                    <img
+                      src="./images/initial-state-demo.png"
+                      alt="initial-state"
+                      class="img-thumbnail"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <p>
+                      Congrats for reaching
+                      <span class="counter">0</span> generations!
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
 
     <!--JQuery-->
     <script
