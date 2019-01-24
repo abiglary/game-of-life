@@ -1,37 +1,46 @@
-html,
-body {
-  width: 100%;
-  height: 100%;
+* {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: "VT323", monospace;
-  font-size: 16px;
-  background: #000000; /* fallback for old browsers */
+  font-family: "Rajdhani", sans-serif;
+  font-size: 18px;
+  color: white;
+  background: #2c3e50; /* fallback for old browsers */
   background: -webkit-linear-gradient(
-    to bottom,
-    #434343,
-    #000000
+    to right,
+    #2c3e50,
+    #bdc3c7
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to bottom,
-    #434343,
-    #000000
+    to right,
+    #2c3e50,
+    #bdc3c7
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-direction: column;
 }
 
+header {
+  margin: 10px auto;
+}
+
+.panel {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .board {
-  background: lightgrey;
-  padding: 1rem;
+  background: #616f7d;
+  padding: 0.7rem;
   border-radius: 4px;
   box-shadow: 8px 9px 26px 0 rgba(46, 61, 73, 0.5);
   display: flex;
@@ -51,56 +60,16 @@ body {
   width: 1rem;
   margin: 0.1rem 0.1rem;
   background: grey;
-  font-size: 0;
-  color: #ffffff;
   border-radius: 5px;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-}
-
-.cell.birth {
-  transform: rotateY(0);
-  background: #02b3e4;
-  cursor: default;
-  animation-name: flipInY;
-  -webkit-backface-visibility: visible !important;
-  backface-visibility: visible !important;
-  animation-duration: 0.75s;
+  box-shadow: -4px 0 24px 6px rgba(9, 10, 11, 0.3);
 }
 
 .alive {
   cursor: default;
   background: #e5f720;
-  font-size: 33px;
   animation-name: rubberBand;
-  -webkit-backface-visibility: visible !important;
-  backface-visibility: visible !important;
-  animation-duration: 0.75s;
-}
-
-.cell.dies {
-  animation-name: pulse;
-  -webkit-backface-visibility: visible !important;
-  backface-visibility: visible !important;
-  animation-duration: 0.75s;
-  background: #e2043b;
-}
-
-/*
- * Styles for the Score Panel
- */
-
-.panel {
-  text-align: left;
-  margin-bottom: 10px;
-}
-
-.panel .restart {
-  float: right;
-  cursor: pointer;
+  animation-duration: 0.5s;
 }
 
 /*

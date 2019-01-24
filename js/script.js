@@ -18,6 +18,8 @@ var directions = [
   [1, 1]
 ];
 var notes = ["C", "D", "E", "F", "G", "A", "B"];
+var audio = document.getElementById("audioPlayer");
+var alive = $(".alive");
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS ------------------------------------------
@@ -50,10 +52,12 @@ function snapshot(matrix) {
 // records initial state, resets any counters and launches 1st generation
 function launch() {
   snapshot(initialState);
+  alive = $(".alive");
   console.log("INITIAL STATE: ", initialState);
   gameStarted = true;
   generations = 0;
-  next();
+  audio.play();
+  audio.currentTime = 205;
 }
 
 // moves up to a next generation
@@ -79,7 +83,11 @@ function next() {
   console.log("NEXT STATE:", nextState);
   draw();
   generations++;
-  update();
+  updateCounter();
+  alive = $(".alive");
+  if (alive.length === 0) {
+    audio.pause();
+  }
 }
 
 // checks if index is still inbounds
@@ -115,7 +123,7 @@ function draw() {
       }
     }
   }
-  sound();
+  //sound();
   //congrats();
 }
 
@@ -140,9 +148,9 @@ function resetBoard() {
 function sound() {
   for (var i = 0; i < size; i++) {
     if (nextState[i].indexOf(1) > 0) {
-      var quo = Math.floor(i / 7) + 3;
-      var rem = i % 7;
-      Synth.play(0, notes[rem], quo, 2);
+      var q = Math.floor(i / 7) + 3;
+      var r = i % 7;
+      Synth.play(1, notes[r], q, 5);
     }
   }
 }
@@ -172,7 +180,7 @@ document.onkeydown = function(event) {
   if (event.keyCode === 8) {
     console.log("BACKSPACE");
     resetBoard();
-    update();
+    updateCounter();
   }
 };
 
@@ -194,7 +202,7 @@ var modal = $(".popup");
 // COUNTER : counts the number of generations since game start
 var counter = $(".counter");
 
-function update() {
+function updateCounter() {
   counter.html(generations);
 }
 
