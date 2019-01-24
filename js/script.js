@@ -3,7 +3,7 @@
 
 var gameStarted = false;
 var generations = 0;
-var size = 24;
+var size = 50;
 var initialState = generateGrid(size);
 var currentState = generateGrid(size);
 var nextState = generateGrid(size);
@@ -18,7 +18,26 @@ var directions = [
   [1, 1]
 ];
 var notes = ["C", "D", "E", "F", "G", "A", "B"];
-var audio = document.getElementById("audioPlayer");
+var musics = [
+  "./mp3/beethoven-ode_to_joy.mp3",
+  "./mp3/rondo.ogg",
+  "./mp3/wagner-valkyries.ogg",
+  "./mp3/strauss-zarathustra.ogg",
+  "./mp3/bumblebee.ogg"
+];
+var ref = Math.floor(Math.random() * musics.length);
+var randomMusic = musics[ref];
+
+var board = document.getElementById("board");
+for (var i = 0; i < size; i++) {
+  $("#board").append($("<div>", { class: "row", id: "row" + i }));
+  for (var j = 0; j < size; j++) {
+    $("#row" + i + "").append(
+      $("<div>", { class: "cell", id: "row" + i + "-col" + j })
+    );
+  }
+}
+
 var alive = $(".alive");
 
 // -----------------------------------------------------------------------
@@ -56,8 +75,13 @@ function launch() {
   console.log("INITIAL STATE: ", initialState);
   gameStarted = true;
   generations = 0;
+  console.log("MUSIC: ", audio);
   audio.play();
-  audio.currentTime = 205;
+  if (ref === 0) {
+    audio.currentTime = 205;
+  } else if (ref === 3) {
+    audio.currentTime = 17;
+  }
 }
 
 // moves up to a next generation
@@ -154,6 +178,11 @@ function sound() {
     }
   }
 }
+
+// randomly selected music
+document.getElementById("audioDiv").innerHTML =
+  '<audio id="audioPlayer" src=' + randomMusic + ">";
+var audio = document.getElementById("audioPlayer");
 
 // -----------------------------------------------------------------------
 // ------------------- INPUTS --------------------------------------------
