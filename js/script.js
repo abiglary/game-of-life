@@ -34,6 +34,7 @@ var counter = $(".counter");
 var lastgen = 0;
 var stalls = 0;
 var interval;
+var myCanvas;
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS DECLARATIONS -----------------------------
@@ -86,7 +87,7 @@ function snapshot(matrix) {
   }
 }
 
-// records initial state, resets any counters and launches 1st generation
+// starts moving one generation after the other automatically
 function launch() {
   snapshot(initialState);
   alive = $(".alive");
@@ -101,7 +102,7 @@ function launch() {
   autogame = true;
   interval = setInterval(function() {
     next();
-  }, 400);
+  }, 250);
 }
 
 // forwards to next generation
@@ -110,7 +111,7 @@ function next() {
     snapshot(initialState);
     // TOO SLOW TO DO A GOOD CAPTURE... NEED ASYNC I GUESS...
     html2canvas(document.querySelector("#board")).then(canvas => {
-      $("#test1234").append(canvas);
+      $("#end-picture").append(canvas);
     });
   }
 
@@ -148,7 +149,6 @@ function stillAlive() {
       clearInterval(interval);
     }
     autogame = false;
-
     $("#dead-modal").modal("show");
   } else if (alive.length - lastgen === 0) {
     stalls++;
@@ -164,23 +164,23 @@ function stillAlive() {
 // pause function
 function pause() {
   audio.pause();
-  clearInterval(intervalId);
+  clearInterval(interval);
 }
 
 /*
 // resume function
 function resume() {
   audio.play();
-  var intervalId = setInterval(function() {
+  interval = setInterval(function() {
     next();
-  }, 400);
+  }, 250);
 }
 
 // fast forward function
 function fastForward() {
-  var intervalId = setInterval(function() {
+  interval = setInterval(function() {
     next();
-  }, 100);
+  }, 50);
 }
 */
 
@@ -291,15 +291,6 @@ $("#apply-size").on("click", function(event) {
     generateBoard(size);
   }
 });
-
-//---------------------------------------------------------------------------------------------
-//------------------------------ END OF GAME --------------------------------------------------
-
-//  play Again
-function playAgain() {
-  modal.removeClass("show");
-  resetBoard();
-}
 
 // -----------------------------------------------------------------------
 // ------------------- INPUTS --------------------------------------------

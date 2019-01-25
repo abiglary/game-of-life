@@ -35,16 +35,16 @@
         <div>
           <span>Generations : <span class="counter">0</span></span>
         </div>
-        <div class="help" onclick="showHelp()">
-          <span> Help </span><i class="fa fa-help"></i>
+        <div id="help-button" class="button" onclick="showHelp()">
+          <span> Help </span><i class="fa fa-info-circle"></i>
         </div>
-        <div class="play" onclick="launch()">
+        <div id="play-button" class="button" onclick="launch()">
           <span> Play </span><i class="fa fa-play"></i>
         </div>
-        <div class="pause" onclick="pause()">
+        <div id="pause-button" class="button" onclick="pause()">
           <span> Pause </span><i class="fa fa-pause"></i>
         </div>
-        <div class="restart" onclick="resetBoard()">
+        <div id="restart-button" class="button" onclick="resetBoard()">
           <span> Reset </span><i class="fa fa-repeat"></i>
         </div>
       </section>
@@ -53,7 +53,34 @@
       <section><div id="board" class="board"></div></section>
     </div>
 
-    <!-- Examples -->
+    <!-- Help -->
+    <section>
+      <div id="help-text" class="demo">
+        <h3>What is it about?</h3>
+        <p>
+          This game is based on simple logic & experimentation. There is no
+          particular goal except trying new 'initial states' and having fun
+          watching the result.<br />The principle of this game is the
+          following:
+        </p>
+          <ul>
+            <li>A cell is either 'dead' or 'alive'.</li>
+            <li>A 'dead' cell will come alive ('birth') at next generation if it is has exactly 3 'live' adjacent cells.</li>
+            <li>A 'live' cell will stay alive at next generation if it has exactly 2 or 3 'live' adjectent cells.</li>
+            <li>A 'live' cell will die of 'starvation' at next generation if it has 1 or 0 adjacent 'live' cells.</li>
+            <li>A 'live' cell will die of 'overpopulation' at next generation if it has 4 or more adjacent 'live' cells.</li>
+            <li>That's it!</li>
+          </ul>
+        <p>
+          Every 'initial state' will generate a different evolution, some leading to death (no more 'live' cells), others leading to a loop (patterns alternating indefinitely) or even infinite growth.<br>Try it by yourself by clicking on some cells (making them 'alive') and either iterating over generations manually (hit Spacebar) or automatically (hit Enter or the Play button).<br>Anytime you can click on the Pause button to stop iterating or Reset to start again with an empty grid.
+        </p>
+        <p>
+          Click on 'Help' to see a sample of characteristic figures you can try.<br>
+          Keep in mind though that results may differ depending on array size, as boundaries may interfere with the theoretical evolution which would normally happen is the grid was of infinite size.
+        </p>
+      </div>
+    </section>
+
     <section>
       <div id="examples-1" class="demo">
         <div class="card">
@@ -253,19 +280,14 @@
               <button type="button" class="close" data-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <p>This was your initial state</p>
-              <img
-                src="./images/initial-state-demo.png"
-                alt="initial-state"
-                class="img-thumbnail"
-              />
-              <div id="test1234"></div>
-            </div>
-            <div class="modal-footer">
               <p>
                 Congrats for reaching
                 <span class="counter">0</span> generations!
               </p>
+              <p>This was your initial state</p>
+              <div id="end-picture"></div>
+            </div>
+            <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
