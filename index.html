@@ -38,6 +38,9 @@
         <div id="help-button" class="button" onclick="showHelp()">
           <span> Help </span><i class="fa fa-info-circle"></i>
         </div>
+        <div id="size-button" class="button" onclick="changeSize()">
+            <span> Size </span><i class="fa fa-plus"></i>
+          </div>
         <div id="play-button" class="button" onclick="launch()">
           <span> Play </span><i class="fa fa-play"></i>
         </div>
@@ -244,7 +247,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"
-                    >(Optional. Please stay below 100.)</span
+                    >Insert a number here (max advised : 100)</span
                   >
                 </div>
                 <input type="number" id="new-size" class="form-control" />
@@ -289,6 +292,7 @@
             </div>
             <div class="modal-footer">
               <button
+                id="dead-modal-close"
                 type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal"

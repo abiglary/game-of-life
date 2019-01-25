@@ -34,7 +34,7 @@ var counter = $(".counter");
 var lastgen = 0;
 var stalls = 0;
 var interval;
-var myCanvas;
+var isPaused = false;
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS DECLARATIONS -----------------------------
@@ -110,14 +110,14 @@ function next() {
   if (generations === 0) {
     snapshot(initialState);
     // TOO SLOW TO DO A GOOD CAPTURE... NEED ASYNC I GUESS...
-    html2canvas(document.querySelector("#board")).then(canvas => {
+    $("#end-picture").empty();
+    html2canvas(document.querySelector("#board"),{async:false}).then(canvas => {
       $("#end-picture").append(canvas);
     });
   }
 
   snapshot(currentState);
   lastgen = $(".alive").length;
-  console.log("CURRENT STATE: ", currentState);
 
   for (var i = 0; i < size; i++) {
     for (var j = 0; j < size; j++) {
@@ -134,7 +134,7 @@ function next() {
       }
     }
   }
-  console.log("NEXT STATE:", nextState);
+
   draw();
   generations++;
   updateCounter();
@@ -151,7 +151,9 @@ function stillAlive() {
     autogame = false;
     $("#dead-modal").modal("show");
   } else if (alive.length - lastgen === 0) {
+    console.log(lastgen);
     stalls++;
+    console.log(stalls);
     if (stalls > 50) {
       pause();
       $("#stuck-modal").modal("show");
@@ -163,19 +165,11 @@ function stillAlive() {
 
 // pause function
 function pause() {
-  audio.pause();
-  clearInterval(interval);
+    audio.pause();
+    clearInterval(interval);
 }
 
 /*
-// resume function
-function resume() {
-  audio.play();
-  interval = setInterval(function() {
-    next();
-  }, 250);
-}
-
 // fast forward function
 function fastForward() {
   interval = setInterval(function() {
@@ -239,6 +233,7 @@ function reset(matrix) {
 function resetBoard() {
   reset(nextState);
   generations = 0;
+  updateCounter();
   gameStarted = false;
   draw();
 }
@@ -267,6 +262,11 @@ function showHelp() {
   }, 200);
 }
 
+// reset when clicking Close button on dead-modal
+$("#dead-modal-close").on("click", function() {
+  resetBoard();
+});
+
 //---------------------------------------------------------------------------------------------
 //---------------------------- INITIALIZATION -------------------------------------------------
 
@@ -276,8 +276,37 @@ $(".demo").hide();
 // generate board with default size (30)
 generateBoard(size);
 
-// displays modal on page load
-$(window).on("load", function() {
+
+
+// -----------------------------------------------------------------------
+// ------------------- INPUTS --------------------------------------------
+
+$(".cell").on("click", event => {
+  $(event.target).toggleClass("alive");
+});
+
+document.onkeydown = function(event) {
+  // ENTER
+  if (event.keyCode === 13) {
+    if (gameStarted) {
+      pause();
+    } else {
+      launch();
+    }
+  }
+  // SPACEBAR
+  if (event.keyCode === 32) {
+    event.preventDefault();
+    next();
+  }
+  // BACKSPACE
+  if (event.keyCode === 8) {
+    resetBoard();
+  }
+};
+
+// displays modal on click over Size button
+$("#size-button").on("click", function() {
   $("#size-modal").modal("show");
 });
 
@@ -292,35 +321,4 @@ $("#apply-size").on("click", function(event) {
   }
 });
 
-// -----------------------------------------------------------------------
-// ------------------- INPUTS --------------------------------------------
-
-$(".cell").on("click", event => {
-  console.log("REDEFINED CLICK FUNCTION");
-  console.log(event);
-  console.log(event.target);
-  console.log(event.currentTarget);
-  $(event.target).toggleClass("alive");
-});
-
-document.onkeydown = function(event) {
-  if (event.keyCode === 13) {
-    console.log("ENTER");
-    if (gameStarted) {
-      return;
-    } else {
-      console.log("LAUNCH GAME");
-      launch();
-    }
-  }
-  if (event.keyCode === 32) {
-    console.log("SPACE");
-    event.preventDefault();
-    next();
-  }
-  if (event.keyCode === 8) {
-    console.log("BACKSPACE");
-    resetBoard();
-    updateCounter();
-  }
-};
+// displays Resume button when on pause()
