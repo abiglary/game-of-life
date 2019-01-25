@@ -150,7 +150,10 @@ function stillAlive() {
     }
     autogame = false;
     $("#dead-modal").modal("show");
-  } else if (alive.length - lastgen === 0) {
+  } 
+  
+  /*
+  else if (alive.length - lastgen === 0) {
     console.log(lastgen);
     stalls++;
     console.log(stalls);
@@ -161,6 +164,7 @@ function stillAlive() {
   } else {
     stalls = 0;
   }
+  */
 }
 
 // pause function

@@ -101,7 +101,7 @@ span {
   font-size: 0.8em;
 }
 
-#help-text h3,p,ul {
+#help-text h3, #help-text p, #help-text ul {
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 20px;
