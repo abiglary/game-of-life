@@ -33,6 +33,7 @@ var autogame = false;
 var counter = $(".counter");
 var lastgen = 0;
 var stalls = 0;
+var interval;
 
 // -----------------------------------------------------------------------
 // ------------------ FUNCTIONS DECLARATIONS -----------------------------
@@ -89,10 +90,8 @@ function snapshot(matrix) {
 function launch() {
   snapshot(initialState);
   alive = $(".alive");
-  console.log("INITIAL STATE: ", initialState);
   gameStarted = true;
   generations = 0;
-  console.log("MUSIC: ", audio);
   audio.play();
   if (rand === 0) {
     audio.currentTime = 205;
@@ -100,16 +99,21 @@ function launch() {
     audio.currentTime = 17;
   }
   autogame = true;
-  var intervalId = setInterval(function() {
+  interval = setInterval(function() {
     next();
-  }, 200);
+  }, 400);
 }
 
 // forwards to next generation
 function next() {
   if (generations === 0) {
     snapshot(initialState);
+    // TOO SLOW TO DO A GOOD CAPTURE... NEED ASYNC I GUESS...
+    html2canvas(document.querySelector("#board")).then(canvas => {
+      $("#test1234").append(canvas);
+    });
   }
+
   snapshot(currentState);
   lastgen = $(".alive").length;
   console.log("CURRENT STATE: ", currentState);
@@ -140,17 +144,15 @@ function next() {
 function stillAlive() {
   alive = $(".alive");
   if (alive.length === 0) {
+    if (autogame) {
+      clearInterval(interval);
+    }
     autogame = false;
-    pause();
+
     $("#dead-modal").modal("show");
-  } else {
-    console.log("STILL ALIVE");
-  }
-
-  if (alive.length - lastgen === 0) {
+  } else if (alive.length - lastgen === 0) {
     stalls++;
-
-    if (stalls > 20) {
+    if (stalls > 50) {
       pause();
       $("#stuck-modal").modal("show");
     }
@@ -165,13 +167,22 @@ function pause() {
   clearInterval(intervalId);
 }
 
+/*
 // resume function
-function pause() {
+function resume() {
   audio.play();
   var intervalId = setInterval(function() {
     next();
-  }, 200);
+  }, 400);
 }
+
+// fast forward function
+function fastForward() {
+  var intervalId = setInterval(function() {
+    next();
+  }, 100);
+}
+*/
 
 // checks if index is still inbounds
 function inbounds(r, c) {

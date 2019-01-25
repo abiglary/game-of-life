@@ -5,75 +5,35 @@
     <title>Game Of Life</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link
       href="https://fonts.googleapis.com/css?family=Rajdhani"
       rel="stylesheet"
     />
-
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-
     <link
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
     />
-
     <link rel="stylesheet" href="./css/style.css" />
   </head>
+
   <body>
     <div class="container">
       <header><h1>Game Of Life</h1></header>
+    </div>
 
-      <!-- modal 1 : change size (optional) -->
-      <section id="modal1">
-        <div id="size-modal" class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">What size should your array be?</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      >(Optional. Please stay below 100.)</span
-                    >
-                  </div>
-                  <input type="number" id="new-size" class="form-control" />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" id="apply-size" class="btn btn-primary">
-                  Apply new array size
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+    <div class="container">
+      <!-- Control Panel -->
       <section class="panel">
         <div>
-          <spa>Generations : <span class="counter">0</span></spa>
+          <span>Generations : <span class="counter">0</span></span>
         </div>
         <div class="play" onclick="launch()">
           <span> Play </span><i class="fa fa-play"></i>
@@ -86,91 +46,242 @@
         </div>
       </section>
 
-      <div id="board" class="board"></div>
+      <!-- Board -->
+      <section><div id="board" class="board"></div></section>
+    </div>
 
-      <!-- Audio -->
-      <div id="audioDiv"></div>
+    <!-- Examples -->
+    <section>
+      <div id="examples-1" class="demo">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/beehive.png"
+            alt="still-life"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Beehive</h5>
+            <p class="card-text">A simple stable block.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/blinker.png" alt="blinker" />
+          <div class="card-body">
+            <h5 class="card-title">Blinker</h5>
+            <p class="card-text">A basic period-2 oscillator.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/glider.png" alt="glider" />
+          <div class="card-body">
+            <h5 class="card-title">Glider</h5>
+            <p class="card-text">
+              A "spaceship". Moves across the board indefinitely.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/pulsar.png" alt="pulsar" />
+          <div class="card-body">
+            <h5 class="card-title">Pulsar</h5>
+            <p class="card-text">A period-3 oscillator.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/hwss.png" alt="heavyweight" />
+          <div class="card-body">
+            <h5 class="card-title">HWSS</h5>
+            <p class="card-text">A heavyweight spaceship.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/pentadecathlon.png"
+            alt="pentadecathlon"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Pentadecathlon</h5>
+            <p class="card-text">A period-15 oscillator.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <!-- modal 2 : all dead -->
-      <section id="modal2">
-        <div id="dead-modal" class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">End of Game : DEATH</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                ></button>
+    <section>
+      <div id="examples-2" class="demo">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/r-pentomino.png"
+            alt="r-pentomino"
+          />
+          <div class="card-body">
+            <h5 class="card-title">R-pentomino</h5>
+            <p class="card-text">
+              First discovered "methuselah" - patterns which evolve for long
+              periods before stabilizing (1.103 generations here).
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/die-hard.png"
+            alt="die-hard"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Die Hard</h5>
+            <p class="card-text">
+              Another "methuselah". Disappears after 130 generations.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/acorn.png" alt="acorn" />
+          <div class="card-body">
+            <h5 class="card-title">Acorn</h5>
+            <p class="card-text">
+              One last "methuselah" : 5.206 generations (and generates 13
+              gliders).
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="./images/gosper.png" alt="gosper" />
+          <div class="card-body">
+            <h5 class="card-title">Gosper Glider Gun</h5>
+            <p class="card-text">
+              First pattern discovered that grows indefinitely.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/infinite.png"
+            alt="infinite"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Infinite Growth</h5>
+            <p class="card-text">
+              A line pattern which is in reality a double "block-laying switch
+              engine" (leaves 2x2 blocks behind).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal #1 : Change array size (optional) -->
+    <section id="modal1">
+      <div id="size-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">What size should your array be?</h4>
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    >(Optional. Please stay below 100.)</span
+                  >
+                </div>
+                <input type="number" id="new-size" class="form-control" />
               </div>
-              <div class="modal-body">
-                <p>This was your initial state</p>
-                <img
-                  src="./images/initial-state-demo.png"
-                  alt="initial-state"
-                  class="img-thumbnail"
-                />
-              </div>
-              <div class="modal-footer">
-                <p>
-                  Congrats for reaching
-                  <span class="counter">0</span> generations!
-                </p>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="apply-size" class="btn btn-primary">
+                Apply new array size
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
 
-      <!-- modal 3 : stuck forever -->
-      <section id="modal3">
-            <div id="stuck-modal" class="modal" tabindex="-1" role="dialog">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">End of Game : INFINITE LOOP</h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This was your initial state</p>
-                    <img
-                      src="./images/initial-state-demo.png"
-                      alt="initial-state"
-                      class="img-thumbnail"
-                    />
-                  </div>
-                  <div class="modal-footer">
-                    <p>
-                      Congrats for reaching
-                      <span class="counter">0</span> generations!
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
+    <!-- Audio -->
+    <div id="audioDiv"></div>
+
+    <!-- Modal #2 : All cells are dead -->
+    <section id="modal2">
+      <div id="dead-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">End of Game : DEATH</h5>
+              <button type="button" class="close" data-dismiss="modal"></button>
             </div>
-          </section>
+            <div class="modal-body">
+              <p>This was your initial state</p>
+              <img
+                src="./images/initial-state-demo.png"
+                alt="initial-state"
+                class="img-thumbnail"
+              />
+              <div id="test1234"></div>
+            </div>
+            <div class="modal-footer">
+              <p>
+                Congrats for reaching
+                <span class="counter">0</span> generations!
+              </p>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
+    <!-- Modal #3 : Stuck Forever -->
+    <section id="modal3">
+      <div id="stuck-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">End of Game : INFINITE LOOP</h5>
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p>This was your initial state</p>
+              <img
+                src="./images/initial-state-demo.png"
+                alt="initial-state"
+                class="img-thumbnail"
+              />
+            </div>
+            <div class="modal-footer">
+              <p>
+                Congrats for reaching
+                <span class="counter">0</span> generations!
+              </p>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!--JQuery-->
     <script
@@ -188,6 +299,9 @@
 
     <!--AudioSynth-->
     <script src="./audiosynth/audiosynth.js"></script>
+
+    <!--HTML2Canvas-->
+    <script src="./js/html2canvas.min.js"></script>
 
     <!--Custom script-->
     <script src="js/script.js"></script>

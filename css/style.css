@@ -26,9 +26,20 @@ header {
   margin: 10px auto;
 }
 
+h1 {
+  text-shadow: 0 0 25px rgba(255, 255, 255, 1);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+span {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
 .panel {
-  width: 75%;
+  width: 80%;
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   font-size: 1em;
@@ -69,6 +80,64 @@ header {
   animation-duration: 0.5s;
 }
 
+.demo {
+  position: absolute;
+  top: 10%;
+  width: 9%;
+}
+
+#examples-1 {
+  left: 5%;
+}
+
+#examples-2 {
+  right: 5%;
+}
+
+.card {
+  background-color: rgba(88, 121, 153, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.5em;
+  margin: 10px 0;
+}
+
+#examples-2 .card {
+  background-color: rgba(88, 121, 153, 0.2);
+}
+
+.card-img-top {
+  margin: 0 auto;
+  width: 70%;
+  box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.2);
+}
+
+#examples-2 .card-img-top {
+  box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.4);
+}
+
+.card-body {
+  padding: 0;
+  margin: 1em 0;
+  text-align: center;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+#examples-2 .card-body {
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+.card.img {
+  padding: 0.5em;
+}
+
+.card h5 {
+  font-size: 0.8em;
+}
+
+.card p {
+  font-size: 0.6em;
+}
+
 .modal-content {
   background-color: rgba(156, 166, 173, 1);
 }
@@ -107,36 +176,9 @@ header {
   border-color: #2c3e50;
 }
 
-.popup {
-  margin: 70px auto;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 5px;
-  width: 85%;
-  position: relative;
-  transition: all 5s ease-in-out;
-  font-family: "Gloria Hallelujah", cursive;
-}
-
 .show {
   visibility: visible !important;
   opacity: 100 !important;
-}
-
-#starRating li {
-  display: inline-block;
-}
-
-#play-again {
-  background-color: #141214;
-  padding: 0.7rem 1rem;
-  font-size: 1.1rem;
-  display: block;
-  margin: 0 auto;
-  width: 50%;
-  font-family: "Gloria Hallelujah", cursive;
-  color: #ffffff;
-  border-radius: 5px;
 }
 
 /* animations */
@@ -177,6 +219,7 @@ header {
 
   40% {
     transform: scale3d(0.75, 1.25, 1);
+    box-shadow: 0 0 8px 3px rgba(229, 247, 34, 0.8);
   }
 
   50% {
