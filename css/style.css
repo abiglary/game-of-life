@@ -101,12 +101,21 @@ span {
   font-size: 0.8em;
 }
 
-#help-text h3, #help-text p, #help-text ul {
+#help-text h3, #help-text p {
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 20px;
 }
 
+#help-text p span {
+  font-weight: bold;
+  font-size: 1.2em;
+  text-shadow: 0 0 5px rgba(255,255,255,1);
+}
+
+#help-text li {
+  color: #e5f720;
+}
 
 #examples-1 {
   top: 10%;
