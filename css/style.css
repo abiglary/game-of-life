@@ -81,24 +81,37 @@ span {
 }
 
 .demo {
+  animation-name: flipInY;
+  animation-duration: 2s;
   position: absolute;
-  top: 10%;
-  width: 9%;
 }
 
 #examples-1 {
+  top: 10%;
   left: 5%;
+  width: 9%;
 }
 
 #examples-2 {
+  top: 10%;
   right: 5%;
+  width: 9%;
+}
+
+#examples-3 {
+  top: 750px;
+  right: 5%;
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 .card {
   background-color: rgba(88, 121, 153, 0.2);
   color: rgba(255, 255, 255, 0.8);
   padding: 0.5em;
-  margin: 10px 0;
+  margin: 10px 5px;
 }
 
 #examples-2 .card {
@@ -179,6 +192,22 @@ span {
 .show {
   visibility: visible !important;
   opacity: 100 !important;
+}
+
+footer {
+  font-size: 0.7em;
+  position: absolute;
+  right: 70px;
+  top: 1000px;
+}
+
+footer a {
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 25px rgba(44, 62, 80, 1);
+}
+
+footer a:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* animations */

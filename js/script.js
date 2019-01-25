@@ -260,8 +260,18 @@ document.getElementById("audioDiv").innerHTML =
   '<audio id="audioPlayer" src=' + randomMusic + ">";
 var audio = document.getElementById("audioPlayer");
 
+// show examples on overlay
+function showHelp() {
+  var timeout = setTimeout(() => {
+    $(".demo").toggle();
+  }, 200);
+}
+
 //---------------------------------------------------------------------------------------------
 //---------------------------- INITIALIZATION -------------------------------------------------
+
+// hide examples
+$(".demo").hide();
 
 // generate board with default size (30)
 generateBoard(size);

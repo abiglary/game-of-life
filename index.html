@@ -35,6 +35,9 @@
         <div>
           <span>Generations : <span class="counter">0</span></span>
         </div>
+        <div class="help" onclick="showHelp()">
+          <span> Help </span><i class="fa fa-help"></i>
+        </div>
         <div class="play" onclick="launch()">
           <span> Play </span><i class="fa fa-play"></i>
         </div>
@@ -147,6 +150,10 @@
             </p>
           </div>
         </div>
+      </div>
+    </section>
+    <section>
+      <div id="examples-3" class="demo">
         <div class="card">
           <img class="card-img-top" src="./images/gosper.png" alt="gosper" />
           <div class="card-body">
@@ -159,15 +166,39 @@
         <div class="card">
           <img
             class="card-img-top"
-            src="./images/infinite.png"
+            src="./images/infinite-1.png"
             alt="infinite"
           />
           <div class="card-body">
-            <h5 class="card-title">Infinite Growth</h5>
+            <h5 class="card-title">Infinite Growth #1</h5>
             <p class="card-text">
               A line pattern which is in reality a double "block-laying switch
               engine" (leaves 2x2 blocks behind).
             </p>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/infinite-2.png"
+            alt="infinite"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Infinite Growth #2</h5>
+            <p class="card-text">
+              Another infinite growth block, made of only 10 cells (minimal).
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="./images/infinite-3.png"
+            alt="infinite"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Infinite Growth #3</h5>
+            <p class="card-text">And a last one in a 5x5 square.</p>
           </div>
         </div>
       </div>
@@ -282,6 +313,12 @@
         </div>
       </div>
     </section>
+
+    <footer>
+      <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">
+        <span>Game of Life, Conway(1970) - Wikipedia page.</span>
+      </a>
+    </footer>
 
     <!--JQuery-->
     <script
